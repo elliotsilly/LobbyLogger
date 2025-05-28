@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using BepInEx;
+using BepInEx.Configuration;
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
@@ -17,8 +18,13 @@ namespace LobbyLog
         private string lastLobby;
         private TextMeshPro textComponent;
 
-        void Awake() // thanks dev!
+        private ConfigEntry<string> colorHexConfig;
+
+        void Awake()
         {
+
+            colorHexConfig = Config.Bind("Text Color", "Hex", "#FFFFFF", "Hex color code for the lobby logger UI");
+
             GorillaTagger.OnPlayerSpawned(Init);
         }
 
@@ -33,7 +39,7 @@ namespace LobbyLog
             {
                 File.Create(txtpath).Close();
             }
-            
+
             text = new GameObject("LobbyLog");
             text.AddComponent<TextMeshPro>();
             textComponent = text.GetComponent<TextMeshPro>();
@@ -41,7 +47,17 @@ namespace LobbyLog
             text.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             text.transform.rotation = Quaternion.Euler(0f, 243.4958f, 0f);
             textComponent.font = GorillaTagger.Instance.offlineVRRig.playerText1.font;
-            textComponent.color = Color.white;
+
+            if (ColorUtility.TryParseHtmlString(colorHexConfig.Value, out Color parsedColor))
+            {
+                textComponent.color = parsedColor;
+            }
+            else
+            {
+                textComponent.color = Color.white;
+                Logger.LogWarning($"Not valid hex color in config {colorHexConfig.Value}. Defaulting back to white.");
+            }
+
             textComponent.fontSize = 5f;
         }
 
@@ -56,6 +72,7 @@ namespace LobbyLog
             {
                 textComponent.text = "Lobby Logger\nJoin another lobby to display last lobby";
             }
+
             try
             {
                 currentLobby = PhotonNetwork.CurrentRoom.Name;
@@ -69,3 +86,5 @@ namespace LobbyLog
         }
     }
 }
+
+//Config changes made by elliot :3 
