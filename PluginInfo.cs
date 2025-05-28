@@ -1,7 +1,5 @@
 ﻿namespace LobbyLog
 {
-
-    // This class is used to store information about the plugin. Please fill in the fields below.
     class PluginInfo
     {
         public const string GUID = "arielthemonke.lobbylog";

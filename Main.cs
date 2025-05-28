@@ -17,7 +17,12 @@ namespace LobbyLog
         private string lastLobby;
         private TextMeshPro textComponent;
 
-        void Start()
+        void Awake() // thanks dev!
+        {
+            GorillaTagger.OnPlayerSpawned(Init);
+        }
+
+        private void Init()
         {
             NetworkSystem.Instance.OnMultiplayerStarted += OnJoinRoom;
             var dllpath = Assembly.GetExecutingAssembly().Location;
@@ -35,7 +40,8 @@ namespace LobbyLog
             text.transform.position = new Vector3(-68.7667f, 12.1527f, -83.2612f);
             text.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             text.transform.rotation = Quaternion.Euler(0f, 243.4958f, 0f);
-            textComponent.font = VRRig.LocalRig.playerText1.font;
+            textComponent.font = GorillaTagger.Instance.offlineVRRig.playerText1.font;
+            textComponent.color = Color.white;
             textComponent.fontSize = 5f;
         }
 
