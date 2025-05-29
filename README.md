@@ -1,5 +1,6 @@
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/arielthemonke/LobbyLogger/total)
 
+[Join my discord!](https://discord.gg/4QQuYJu46e)
 # Lobby Logger
 Ever been in a lobby and accidentally disconnected? Lobby Logger will help with that!
 
